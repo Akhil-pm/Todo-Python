@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+       <form method="POST" class="shadow p-3">
+         {% csrf_token %}
+         {{f.as_p}}
+         <button type="submit" class="btn btn-success">Confirm</button>
+   </form>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}
