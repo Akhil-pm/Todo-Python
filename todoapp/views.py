@@ -4,17 +4,9 @@ from . forms import TodoForm
 
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView,DeleteView
+from django.urls import reverse_lazy
 # Create your views here.
-class Tasklistview(ListView):
-    model=Task
-    template_name='home.html'
-    context_object_name='task1'
-
-class TaskDetailview(DetailView):
-    model = Task
-    template_name = 'detail.html'
-    context_object_name = 'task'
-
 
 def add(request):
     task1=Task.objects.all()
@@ -40,3 +32,28 @@ def update(request,id):
         f.save()
         return redirect('/')
     return render(request,'edit.html',{'f':f,'task':task})
+
+
+# Generic views.
+class Tasklistview(ListView):
+    model=Task
+    template_name='home.html'
+    context_object_name='task1'
+
+class TaskDetailview(DetailView):
+    model = Task
+    template_name = 'detail.html'
+    context_object_name = 'task'
+
+class TaskUpdateView(UpdateView):
+    model = Task
+    template_name = 'update.html'
+    context_object_name = 'task'
+    fields = ('name','priority','date')
+    def get_success_url(self):
+        return reverse_lazy('cbvdetail',kwargs={'pk':self.object.id})
+
+class TaskDeleteView(DeleteView):
+    model = Task
+    template_name = 'delete.html'
+    success_url = reverse_lazy('cbvhome')
